@@ -4,17 +4,17 @@
 # This source code is licensed under the BSD-style license found in the
 # LICENSE file in the root directory of this source tree.
 
-if("${CMAKE_SYSTEM}" MATCHES "Linux")
-  file(GLOB_RECURSE AVX2_CPP "*avx.cpp")
-  add_library(faiss_avx2 OBJECT ${AVX2_CPP})
-  target_compile_options(faiss_avx2 PRIVATE $<$<COMPILE_LANGUAGE:CXX>: -mf16c -mavx2>)
-  target_include_directories(faiss_avx2 PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>)
+# if("${CMAKE_SYSTEM}" MATCHES "Linux")
+#   file(GLOB_RECURSE AVX2_CPP "*avx.cpp")
+#   add_library(faiss_avx2 OBJECT ${AVX2_CPP})
+#   target_compile_options(faiss_avx2 PRIVATE $<$<COMPILE_LANGUAGE:CXX>: -mf16c -mavx2>)
+#   target_include_directories(faiss_avx2 PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>)
 
-  file(GLOB_RECURSE AVX512_CPP "*avx512.cpp")
-  add_library(faiss_avx512 OBJECT ${AVX512_CPP})
-  target_compile_options(faiss_avx512 PRIVATE $<$<COMPILE_LANGUAGE:CXX>: -mf16c -mavx512f -mavx512dq -mavx512bw>)
-  target_include_directories(faiss_avx512 PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>)
-endif()
+#   file(GLOB_RECURSE AVX512_CPP "*avx512.cpp")
+#   add_library(faiss_avx512 OBJECT ${AVX512_CPP})
+#   target_compile_options(faiss_avx512 PRIVATE $<$<COMPILE_LANGUAGE:CXX>: -mf16c -mavx512f -mavx512dq -mavx512bw>)
+#   target_include_directories(faiss_avx512 PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>)
+# endif()
 
 set(FAISS_SRC
   AutoTune.cpp
@@ -100,13 +100,13 @@ set(FAISS_SRC
   utils/utils.cpp
 )
 
-if("${CMAKE_SYSTEM}" MATCHES "Linux")
-  set(FAISS_SRC
-          ${FAISS_SRC}
-          $<TARGET_OBJECTS:faiss_avx2>
-          $<TARGET_OBJECTS:faiss_avx512>
-        )
-endif()
+# if("${CMAKE_SYSTEM}" MATCHES "Linux")
+#   set(FAISS_SRC
+#           ${FAISS_SRC}
+#           $<TARGET_OBJECTS:faiss_avx2>
+#           $<TARGET_OBJECTS:faiss_avx512>
+#         )
+# endif()
 
 set(FAISS_HEADERS
   AutoTune.h
@@ -199,7 +199,7 @@ set(FAISS_HEADERS
   utils/quantize_lut.h
   utils/random.h
   utils/simdlib.h
-  utils/simdlib_avx2.h
+  # utils/simdlib_avx2.h
   utils/simdlib_emulated.h
   utils/simdlib_neon.h
   utils/substructure-inl.h
@@ -254,7 +254,7 @@ if(WIN32)
 endif()
 
 target_compile_definitions(faiss PRIVATE FINTEGER=int)
-target_compile_options(faiss PRIVATE $<$<COMPILE_LANGUAGE:CXX>:-msse4.2 -mpopcnt>)
+# target_compile_options(faiss PRIVATE $<$<COMPILE_LANGUAGE:CXX>:-msse4.2 -mpopcnt>)
 #target_compile_definitions(faiss_avx2 PRIVATE FINTEGER=int)
 
 find_package(OpenMP REQUIRED)
